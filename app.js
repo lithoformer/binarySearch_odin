@@ -148,6 +148,52 @@ class Tree {
         }
         callback(node);
     }
+
+    height(node) {
+
+        let heightLeft = 0;
+        let heightRight = 0;
+
+        if (!node.left && !node.right) {
+            return 0;
+        }
+
+        if (node.left) {
+            heightLeft += 1 + this.height(node.left);
+        }
+
+        if (node.right) {
+            heightRight += 1 + this.height(node.right);
+        }
+
+        return heightLeft > heightRight ? heightLeft : heightRight;
+    }
+
+    depth(node) {
+
+        let depthLeft = 0;
+        let depthRight = 0;
+
+        if (node === this.root) {
+            return 0;
+        }
+
+        if (node && node.left === node) {
+            return depthLeft;
+        }
+        else {
+            depthLeft += 1 + this.depth(node.left)
+        }
+
+        if (node && node.right === node) {
+            return depthRight;
+        }
+        else {
+            depthRight += 1 + this.depth(node.right)
+        }
+
+        return depthLeft > depthRight ? depthLeft : depthRight;
+    }
 }
 
 function outputLevelOrder(node) {
@@ -232,7 +278,15 @@ prettyPrint(nodes);
 dollarTree.deleteItem(4, nodes);
 prettyPrint(nodes);
 const node = dollarTree.findNode(5, nodes);
-dollarTree.levelOrder(nodes, outputLevelOrder);
-dollarTree.inOrder(nodes, outputInOrder);
-dollarTree.preOrder(nodes, outputPreOrder);
-dollarTree.postOrder(nodes, outputPostOrder);
+// dollarTree.levelOrder(nodes, outputLevelOrder);
+// dollarTree.inOrder(nodes, outputInOrder);
+// dollarTree.preOrder(nodes, outputPreOrder);
+// dollarTree.postOrder(nodes, outputPostOrder);
+let height = dollarTree.height(node);
+const node2 = dollarTree.findNode(8, nodes);
+let height2 = dollarTree.height(node2);
+const node3 = dollarTree.findNode(3, nodes);
+let height3 = dollarTree.height(node3);
+let depth1 = dollarTree.depth(node);
+let depth2 = dollarTree.depth(node2);
+let depth3 = dollarTree.depth(node3);
