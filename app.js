@@ -208,8 +208,19 @@ class Tree {
         return true;
     }
 
-    reBalance(node) {
+    reBalance(arr, node) {
+        if (node === null) {
+            return;
+        }
+        if (node.left) {
+            this.reBalance(arr, node.left);
+        }
+        arr.push(node.data);
+        if (node.right) {
+            this.reBalance(arr, node.right);
+        }
 
+        return this.buildTree(arr, 0, arr.length - 1);
     }
 }
 
@@ -288,23 +299,24 @@ let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const dollarTree = new Tree(arr);
 let nodes = dollarTree.buildTree(arr, 0, arr.length - 1);
 prettyPrint(nodes);
-// nodes = dollarTree.insertItem(1000, nodes);
-// prettyPrint(nodes);
-// nodes = dollarTree.insertItem(500, nodes);
-// prettyPrint(nodes);
-// dollarTree.deleteItem(4, nodes);
-// prettyPrint(nodes);
-// const node = dollarTree.findNode(5, nodes);
-// dollarTree.levelOrder(nodes, outputLevelOrder);
-// dollarTree.inOrder(nodes, outputInOrder);
-// dollarTree.preOrder(nodes, outputPreOrder);
-// dollarTree.postOrder(nodes, outputPostOrder);
-// let height = dollarTree.height(node);
-// const node2 = dollarTree.findNode(8, nodes);
-// let height2 = dollarTree.height(node2);
-// const node3 = dollarTree.findNode(3, nodes);
-// let height3 = dollarTree.height(node3);
-// let depth1 = dollarTree.depth(nodes, node.data, 0);
-// let depth2 = dollarTree.depth(nodes, node2.data, 0);
-// let depth3 = dollarTree.depth(nodes, node3.data, 0);
-// let depth4 = dollarTree.depth(nodes, 500, 0);
+nodes = dollarTree.insertItem(1000, nodes);
+prettyPrint(nodes);
+nodes = dollarTree.insertItem(500, nodes);
+prettyPrint(nodes);
+dollarTree.deleteItem(4, nodes);
+prettyPrint(nodes);
+const node = dollarTree.findNode(5, nodes);
+dollarTree.levelOrder(nodes, outputLevelOrder);
+dollarTree.inOrder(nodes, outputInOrder);
+dollarTree.preOrder(nodes, outputPreOrder);
+dollarTree.postOrder(nodes, outputPostOrder);
+let height = dollarTree.height(node);
+const node2 = dollarTree.findNode(8, nodes);
+let height2 = dollarTree.height(node2);
+const node3 = dollarTree.findNode(3, nodes);
+let height3 = dollarTree.height(node3);
+let depth1 = dollarTree.depth(nodes, node.data, 0);
+let depth2 = dollarTree.depth(nodes, node2.data, 0);
+let depth3 = dollarTree.depth(nodes, node3.data, 0);
+let depth4 = dollarTree.depth(nodes, 500, 0);
+const ar = dollarTree.reBalance(arr = [], nodes);
