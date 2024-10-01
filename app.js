@@ -9,15 +9,15 @@ class Node {
 class Tree {
     constructor(arr) {
         this.arr = arr;
-        this.root = null;
+        this.root = new Node(null);
     }
 
     buildTree(arr, start, end) {
         let array = arr.sort((a, b) => { return a - b });
         array = [...new Set(array)];
 
-        if (end > arr.length) {
-            end = arr.length - 1;
+        if (end > array.length - 1) {
+            end = array.length - 1;
         }
 
         if (start > end) {
@@ -42,6 +42,11 @@ class Tree {
             return node;
         }
 
+        if (node.data === null) {
+            node.data = value;
+            return node;
+        }
+
         if (node.data === value) {
             return node;
         }
@@ -59,7 +64,7 @@ class Tree {
     deleteItem(value, node) {
 
         if (node === null) {
-            return false;
+            return node;
         }
 
         if (node.data > value) {
@@ -71,15 +76,20 @@ class Tree {
         else {
             if (node.data === value) {
                 if (node.left && node.right) {
-
+                    const temp = node.left;
+                    node = this.findSuccessor(node.right);
+                    node.left = temp;
+                    return node;
                 }
                 else if (node.left) {
                     node.data = node.left.data;
                     node.left = null;
+                    return node;
                 }
                 else if (node.right) {
                     node.data = node.right.data;
                     node.right = null;
+                    return node;
                 }
                 else {
                     node = null;
@@ -87,6 +97,87 @@ class Tree {
                 }
             }
         }
+    }
+
+    findSuccessor(node) {
+        if (node.left) {
+            return this.findSuccessor(node.left);
+        }
+        else {
+            return node;
+        }
+    }
+
+    findNode(value, node) {
+        if (node.data === value) {
+            return node;
+        }
+        else if (node.data > value) {
+            return this.findNode(value, node.left);
+        }
+        else {
+            return this.findNode(value, node.right);
+        }
+    }
+
+    levelOrder(node, callback) {
+        if (!callback) {
+            throw new Error('no callback function provided');
+        }
+        callback(node);
+    }
+
+    inOrder(node, callback) {
+        if (!callback) {
+            throw new Error('no callback function provided');
+        }
+        callback(node);
+    }
+
+    preOrder(node, callback) {
+        if (!callback) {
+            throw new Error('no callback function provided');
+        }
+        callback(node);
+    }
+
+    postOrder(node, callback) {
+        if (!callback) {
+            throw new Error('no callback function provided');
+        }
+        callback(node);
+    }
+}
+
+function outputLevelOrder(node) {
+    if (node === null) {
+        return;
+    }
+    let arr = [];
+    arr.push(node);
+
+    while (arr.length > 0) {
+        const shifted = arr.shift();
+        console.log(`${shifted.data} `);
+        if (shifted.left) {
+            arr.push(shifted.left);
+        }
+        if (shifted.right) {
+            arr.push(shifted.right);
+        }
+    }
+}
+
+function outputInOrder(node) {
+    if (node === null) {
+        return;
+    }
+    if (node.left) {
+        outputInOrder(node.left);
+    }
+    console.log(`${node.data} `);
+    if (node.right) {
+        outputInOrder(node.right);
     }
 }
 
@@ -102,3 +193,33 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
         prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
 };
+
+let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+const dollarTree = new Tree(arr);
+let nodes = dollarTree.buildTree(arr, 0, arr.length - 1);
+prettyPrint(nodes);
+nodes = dollarTree.insertItem(1000, nodes);
+prettyPrint(nodes);
+nodes = dollarTree.insertItem(500, nodes);
+prettyPrint(nodes);
+dollarTree.deleteItem(4, nodes);
+prettyPrint(nodes);
+const node = dollarTree.findNode(5, nodes);
+dollarTree.levelOrder(nodes, outputLevelOrder);
+dollarTree.inOrder(nodes, outputInOrder);
+// function unknownOrder(arr, node) {
+//     if (node === null) {
+//         return;
+//     }
+//     else {
+//         console.log(`${node.data} `);
+//     }
+//     if (node.left) {
+//         arr.push(node.left);
+//     }
+//     if (node.right) {
+//         arr.push(node.right);
+//     }
+//     outputData(arr, node.left);
+//     outputData(arr, node.right);
+// }
