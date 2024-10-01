@@ -115,9 +115,10 @@ class Tree {
         else if (node.data > value) {
             return this.findNode(value, node.left);
         }
-        else {
+        else if (node.data < value) {
             return this.findNode(value, node.right);
         }
+        return false;
     }
 
     levelOrder(node, callback) {
@@ -181,6 +182,32 @@ function outputInOrder(node) {
     }
 }
 
+function outputPostOrder(node) {
+    if (node === null) {
+        return;
+    }
+    if (node.left) {
+        outputPostOrder(node.left);
+    }
+    if (node.right) {
+        outputPostOrder(node.right);
+    }
+    console.log(`${node.data} `);
+}
+
+function outputPreOrder(node) {
+    if (node === null) {
+        return;
+    }
+    console.log(`${node.data} `);
+    if (node.left) {
+        outputPreOrder(node.left);
+    }
+    if (node.right) {
+        outputPreOrder(node.right);
+    }
+}
+
 const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
         return;
@@ -207,19 +234,5 @@ prettyPrint(nodes);
 const node = dollarTree.findNode(5, nodes);
 dollarTree.levelOrder(nodes, outputLevelOrder);
 dollarTree.inOrder(nodes, outputInOrder);
-// function unknownOrder(arr, node) {
-//     if (node === null) {
-//         return;
-//     }
-//     else {
-//         console.log(`${node.data} `);
-//     }
-//     if (node.left) {
-//         arr.push(node.left);
-//     }
-//     if (node.right) {
-//         arr.push(node.right);
-//     }
-//     outputData(arr, node.left);
-//     outputData(arr, node.right);
-// }
+dollarTree.preOrder(nodes, outputPreOrder);
+dollarTree.postOrder(nodes, outputPostOrder);
