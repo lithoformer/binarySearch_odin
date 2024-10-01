@@ -169,30 +169,47 @@ class Tree {
         return heightLeft > heightRight ? heightLeft : heightRight;
     }
 
-    depth(node) {
+    depth(node, key, depthval = 0) {
 
-        let depthLeft = 0;
-        let depthRight = 0;
-
-        if (node === this.root) {
+        if (node === null)
             return 0;
+
+        if (node.data === key) {
+            return depthval;
         }
 
-        if (node && node.left === node) {
-            return depthLeft;
+        if (node.data > key) {
+            return this.depth(node.left, key, depthval += 1)
+        }
+        else if (node.data < key) {
+            return this.depth(node.right, key, depthval += 1)
         }
         else {
-            depthLeft += 1 + this.depth(node.left)
+            return depthval;
         }
+    }
 
-        if (node && node.right === node) {
-            return depthRight;
+    isBalanced(node) {
+        if (node.left && node.right) {
+            if (Math.abs(this.height(node.left) - this.height(node.right)) > 1) {
+                return false;
+            }
         }
-        else {
-            depthRight += 1 + this.depth(node.right)
+        else if (node.left) {
+            if (this.height(node.left) > 1) {
+                return false;
+            }
         }
+        else if (node.right) {
+            if (this.height(node.right > 1)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-        return depthLeft > depthRight ? depthLeft : depthRight;
+    reBalance(node) {
+
     }
 }
 
@@ -271,22 +288,23 @@ let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const dollarTree = new Tree(arr);
 let nodes = dollarTree.buildTree(arr, 0, arr.length - 1);
 prettyPrint(nodes);
-nodes = dollarTree.insertItem(1000, nodes);
-prettyPrint(nodes);
-nodes = dollarTree.insertItem(500, nodes);
-prettyPrint(nodes);
-dollarTree.deleteItem(4, nodes);
-prettyPrint(nodes);
-const node = dollarTree.findNode(5, nodes);
+// nodes = dollarTree.insertItem(1000, nodes);
+// prettyPrint(nodes);
+// nodes = dollarTree.insertItem(500, nodes);
+// prettyPrint(nodes);
+// dollarTree.deleteItem(4, nodes);
+// prettyPrint(nodes);
+// const node = dollarTree.findNode(5, nodes);
 // dollarTree.levelOrder(nodes, outputLevelOrder);
 // dollarTree.inOrder(nodes, outputInOrder);
 // dollarTree.preOrder(nodes, outputPreOrder);
 // dollarTree.postOrder(nodes, outputPostOrder);
-let height = dollarTree.height(node);
-const node2 = dollarTree.findNode(8, nodes);
-let height2 = dollarTree.height(node2);
-const node3 = dollarTree.findNode(3, nodes);
-let height3 = dollarTree.height(node3);
-let depth1 = dollarTree.depth(node);
-let depth2 = dollarTree.depth(node2);
-let depth3 = dollarTree.depth(node3);
+// let height = dollarTree.height(node);
+// const node2 = dollarTree.findNode(8, nodes);
+// let height2 = dollarTree.height(node2);
+// const node3 = dollarTree.findNode(3, nodes);
+// let height3 = dollarTree.height(node3);
+// let depth1 = dollarTree.depth(nodes, node.data, 0);
+// let depth2 = dollarTree.depth(nodes, node2.data, 0);
+// let depth3 = dollarTree.depth(nodes, node3.data, 0);
+// let depth4 = dollarTree.depth(nodes, 500, 0);
